@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">情侣加热</string>
+    <string name="tile_label">情侣加热</string>
+
+    <string name="channel_name">爱情加热中</string>
+    <string name="channel_desc">显示加热功率、温度与运行时长</string>
+    <string name="notif_title">爱情加热中</string>
+    <string name="notif_idle_text">待机中 · 点一下开始暖手</string>
+    <string name="notif_idle_sub">通知保后台</string>
+    <string name="notif_stop">停止加热</string>
+
+    <string name="couple_channel_name">情侣蓝牙</string>
+    <string name="couple_channel_desc">显示蓝牙连接与远程加热状态</string>
+    <string name="couple_notif_title">爱情加热中 · 情侣模式</string>
+
+    <string name="start">开始发热</string>
+    <string name="stop">停止发热</string>
+
+    <string name="section_preset">加热强度</string>
+    <string name="section_target">目标温度</string>
+    <string name="section_power">省电与保护</string>
+    <string name="section_status">实时状态</string>
+    <string name="section_background">后台与通知</string>
+    <string name="section_couple">情侣模式</string>
+    <string name="section_appearance">外观与日志</string>
+
+    <string name="preset_gentle">温和</string>
+    <string name="preset_balanced">标准</string>
+    <string name="preset_extreme">极热</string>
+    <string name="preset_strong">强力</string>
+
+    <string name="eco_title">省电模式</string>
+    <string name="eco_desc">目标降 1.5°C，功率上限压到 70%</string>
+
+    <string name="auto_off">定时停止</string>
+    <string name="battery_floor">电量保护线</string>
+
+    <string name="keep_alive_title">通知保后台</string>
+    <string name="keep_alive_desc">常驻一条「爱情加热中」的通知，让系统少在后台清理这个进程。</string>
+    <string name="keep_alive_hint">这条通知不发热、不耗电，只是把进程优先级抬高；不想要可以随时关掉，发热功能完全不受影响。</string>
+    <string name="battery_optimization">电池优化</string>
+
+    <string name="couple_receive_title">允许她远程点热</string>
+    <string name="couple_receive_desc">开启后，已配对的那台手机可以通过蓝牙让这台开始发热。只接受系统蓝牙里已配对的设备。</string>
+    <string name="couple_pick">连接她的手机</string>
+    <string name="couple_heat_her">为她加热</string>
+    <string name="couple_stop_her">停止她的</string>
+    <string name="couple_status_default">还没有连接</string>
+    <string name="couple_hint">两台手机都要装这个应用。先在系统蓝牙里配对，再回来选设备：她的那台打开「允许她远程点热」，你点「为她加热」，她的手机就会开始发热；点「停止她的」可以远程停下。</string>
+    <string name="couple_title">情侣挂件</string>
+    <string name="couple_desc">导航栏上坐着两个人，发热时他们会在火山上靠在一起。</string>
+
+    <string name="bt_pick_title">选择她的手机</string>
+    <string name="bt_no_bonded">系统里还没有已配对的手机，先去系统蓝牙设置里配对。</string>
+    <string name="bt_no_adapter">这台手机没有蓝牙。</string>
+    <string name="bt_off">蓝牙没开，先在控制中心打开蓝牙。</string>
+    <string name="bt_need_permission">需要「附近的设备」权限才能用蓝牙情侣模式。</string>
+    <string name="bt_need_peer">先点「连接她的手机」，选一台已配对的设备。</string>
+    <string name="bt_sent_start">已请求她的手机开始加热</string>
+    <string name="bt_sent_stop">已请求她的手机停止加热</string>
+
+    <string name="log_title">运行日志</string>
+    <string name="log_desc">把启动、温控、蓝牙连接等事件写到 /Android/NBB/hotwinter.log，排查问题时用；默认关闭。</string>
+    <string name="log_on">日志已开启，开始写入 /Android/NBB/hotwinter.log</string>
+    <string name="log_off">日志已关闭，不再写文件</string>
+    <string name="log_need_permission">写日志需要「所有文件访问」权限，去系统设置里允许后，再打开开关。</string>
+
+    <string name="label_load">处理器负载</string>
+    <string name="label_threads">工作线程</string>
+    <string name="label_temp">电池温度</string>
+    <string name="label_thermal">系统热控</string>
+    <string name="label_elapsed">运行时长</string>
+
+    <string name="preset_hint_default">36°C 上下是「手不凉、电不掉」的平衡点，每往上 1°C 都更费电。</string>
+
+    <string name="tab_home">首页</string>
+    <string name="tab_feature">设置</string>
+    <string name="tab_danmaku">连接</string>
+    <string name="tab_about">我的</string>
+
+    <string name="page_feature_title">功能</string>
+    <string name="page_feature_desc">没有 Root、没有 Shizuku、没有无障碍：所有开关都只是普通应用权限。</string>
+    <string name="page_danmaku_title">连接</string>
+    <string name="page_danmaku_desc">创建频道，或者加入对方的频道；先在这里连上，再配对和加热。</string>
+
+    <string name="dm_overlay_title">悬浮弹幕</string>
+    <string name="dm_overlay_desc">全屏透明弹幕，需要「显示在其他应用上层」权限；发热时也能用。</string>
+    <string name="dm_input_hint">写一句给她的话…</string>
+    <string name="dm_send">发送</string>
+    <string name="dm_status_default">频道未连接</string>
+    <string name="dm_feed_default">最近收到的弹幕会显示在这里</string>
+    <string name="dm_section_look">弹幕样式</string>
+    <string name="dm_nick">我的昵称</string>
+    <string name="dm_room">房间名（同房间才互相看见）</string>
+    <string name="dm_font">字号</string>
+    <string name="dm_speed">飞行速度</string>
+    <string name="dm_alpha">背景不透明度（文字透明度）</string>
+    <string name="dm_lanes">车道数</string>
+    <string name="dm_show_nick">显示昵称</string>
+    <string name="dm_section_link">弹幕</string>
+    <string name="dm_udp_title">频道弹幕</string>
+    <string name="dm_udp_desc">加入频道后，弹幕会发给频道里的人，不需要填写地址。</string>
+    <string name="dm_port">频道</string>
+    <string name="dm_peer_ip">不需要填写地址</string>
+    <string name="dm_peer_hint">在频道里直接发就行</string>
+    <string name="dm_bt_title">蓝牙链路</string>
+    <string name="dm_bt_desc">和情侣模式共用一条蓝牙链路：连上之后弹幕和「为她加热」都能走它。</string>
+    <string name="dm_bt_go">去情侣模式配对</string>
+    <string name="dm_permission">需要悬浮窗权限：去系统设置里允许「显示在其他应用上层」。</string>
+    <string name="dm_empty">还没写内容，先输入一句弹幕。</string>
+    <string name="dm_sent_both">频道和蓝牙都已发出</string>
+    <string name="dm_sent_udp">已发到频道</string>
+    <string name="dm_sent_bt">已通过蓝牙发出</string>
+    <string name="crash_title">运行诊断</string>
+    <string name="crash_empty">没有崩溃记录。要是再闪退，回到这里能看到上次崩在哪一行。</string>
+    <string name="crash_copy">复制崩溃信息</string>
+    <string name="crash_copied">崩溃信息已复制</string>
+    <string name="dm_need_local_permission">需要打开「附近连接」权限，否则 Android 17 会拦住频道和弹幕。</string>
+    <string name="dm_sent_local">还没有连接，只在本机显示；先创建/加入频道或连蓝牙</string>
+    <string name="dm_notif_channel">悬浮弹幕</string>
+    <string name="dm_notif_title">情侣加热 · 弹幕运行中</string>
+    <string name="dm_notif_text">弹幕正在屏幕上滚动，点这里回到应用</string>
+    <string name="dm_stop">停止弹幕</string>
+
+    <string name="page_about_title">关于</string>
+    <string name="hero_desc">当前电池温度</string>
+
+    <string name="section_adapt">系统适配</string>
+    <string name="adapt_autostart">自启动管理</string>
+    <string name="adapt_battery">电池优化</string>
+    <string name="adapt_appinfo">应用设置</string>
+    <string name="adapt_hint">不同 UI 的自启动入口不一样，点这些按钮会跳到对应系统页面；找不到会退回系统设置。</string>
+    <string name="spark_caption">过去 60 秒 · 电池温度</string>
+
+    <string name="about_head">版本 %1$s · 包名 %2$s
+作者 wumisc · 冬天不冻手，也能给她发弹幕</string>
+
+    <string name="section_support">支持与反馈</string>
+    <string name="section_thanks">感谢名单</string>
+    <string name="donate">捐赠支持</string>
+    <string name="feedback">功能建议</string>
+    <string name="github">开源主页</string>
+    <string name="support_hint">如果这个冬天让你少冷一点，可以请我喝杯热饮。支付宝和微信收款码都在这里，量力而行，心意已经收下。
+建议：点「功能建议」去 GitHub Issues 提，附上机型、系统版本和复现步骤。</string>
+    <string name="donate_no_file">收款码暂时没有加载出来，请稍后再试。</string>
+    <string name="donate_dialog_hint">支付宝 / 微信都可以，量力而行，心意收下。</string>
+    <string name="donate_alipay">支付宝</string>
+    <string name="donate_wechat">微信</string>
+    <string name="close">关闭</string>
+    <string name="thanks_body" formatted="false">AndroidX / AppCompat —— 界面与兼容性基座
+JUnit —— 把温控逻辑关进测试里
+弹幕人生 —— 弹幕设置与通信方式的来源
+AGPL-3.0 社区 —— 开源许可与分享精神
+还有家里那位 —— 这个软件的起因，也是「情侣模式」的名字来源</string>
+    <string name="license_body">本软件以 AGPL-3.0 许可发布：你可以自由使用、修改、分发，但分发修改版时需要同样开源，并保留原作者署名。
+
+建议反馈：GitHub 上搜索 wumisc，或直接在仓库 Issues 里提。</string>
+
+    <string name="section_check">设备检测</string>
+    <string name="check_run">重新检测</string>
+    <string name="check_running">正在检测…</string>
+
+    <string name="footnote">温度超过 45°C、系统进入严重热状态、或电量低于保护线时，会自动停下。冬天在室外尽量把手机放口袋里，风直吹会抵消大部分热量。</string>
+
+    <string name="perm_denied">通知权限被拒绝，状态栏会看不到加热提示，但发热仍然可用。</string>
+
+    <string name="channel_section">频道</string>
+    <string name="channel_status_default">还没有创建或加入频道</string>
+    <string name="channel_create">创建频道</string>
+    <string name="channel_join">加入频道</string>
+    <string name="channel_qr">我的二维码</string>
+    <string name="channel_scan">扫码加入</string>
+    <string name="channel_stop">停止频道</string>
+    <string name="channel_hint">附近没看到人？确认两台手机在同一个 Wi-Fi，并且都停留在这一页。</string>
+    <string name="channel_members_title">频道成员</string>
+    <string name="channel_members_empty">还没有人加入</string>
+    <string name="channel_auto">自动同意加入</string>
+    <string name="channel_auto_hint">只在屏幕亮着、App 在前台、停留在连接页时生效；锁屏或退后台会回到手动确认。</string>
+    <string name="channel_peer_join">加入</string>
+    <string name="channel_peers_empty">正在找附近的人…</string>
+    <string name="channel_join_title">输入频道口令</string>
+    <string name="channel_join_hint">4 位数字，例如 3721</string>
+    <string name="channel_join_ok">加入</string>
+    <string name="channel_qr_title">扫码加入</string>
+    <string name="channel_qr_desc">拍下房主屏幕上的二维码，自动识别频道口令。</string>
+    <string name="channel_qr_bad">没识别到频道二维码，再试一次</string>
+    <string name="channel_camera_denied">需要相机权限才能扫码</string>
+    <string name="channel_full">频道已满</string>
+    <string name="channel_code_prefix">频道口令 </string>
+    <string name="channel_code_tip">把这 4 位数字或二维码发给对方；加入时仍然需要你点同意。</string>
+</resources>

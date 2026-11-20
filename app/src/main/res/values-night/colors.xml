@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#FF120E0C</color>
+    <color name="card">#FF1E1815</color>
+    <color name="text_primary">#FFF6EDE6</color>
+    <color name="text_secondary">#FFA5978C</color>
+    <color name="accent">#FFFF7043</color>
+    <color name="accent_soft">#FF3A231B</color>
+    <color name="chip_bg">#FF2A2220</color>
+    <color name="divider">#26FFFFFF</color>
+    <color name="scene_text_primary">#FFF6EDE6</color>
+    <color name="scene_text_secondary">#B8D8CFC7</color>
+    <color name="ring_track">#33FF7043</color>
+    <color name="accent_cold">#FF7FB3FF</color>
+    <color name="ring_glow_cold">#FF233A56</color>
+    <color name="ring_glow">#FF6B3423</color>
+    <color name="ic_launcher_background">#FF2A140E</color>
+    <color name="on_accent">#FFFFFFFF</color>
+    <color name="input_bg">#FF241D1A</color>
+</resources>

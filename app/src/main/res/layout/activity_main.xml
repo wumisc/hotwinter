@@ -1,0 +1,1273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <io.github.wumisc.hotwinter.ui.SceneryView
+        android:id="@+id/scenery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 首页 -->
+    <ScrollView
+        android:id="@+id/pageHome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:paddingBottom="108dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="18dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:shadowColor="#80000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="6"
+                android:text="@string/app_name"
+                android:textColor="@color/scene_text_primary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="5"
+                android:textColor="@color/scene_text_secondary"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <io.github.wumisc.hotwinter.ui.HeroTempView
+                    android:id="@+id/heroTemp"
+                    android:layout_width="match_parent"
+                    android:layout_height="132dp"
+                    android:contentDescription="@string/hero_desc" />
+
+                <TextView
+                    android:id="@+id/tvHeroStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:letterSpacing="0.08"
+                    android:paddingStart="12dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="6dp"
+                    android:background="@drawable/bg_status_pill"
+                    android:text="待机"
+                    android:textColor="@color/scene_text_primary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/btnMain"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/bg_primary"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="@string/start"
+                android:textColor="@color/on_accent"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/section_preset" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/chipGentle"
+                    style="@style/Chip"
+                    android:text="@string/preset_gentle" />
+
+                <TextView
+                    android:id="@+id/chipBalanced"
+                    style="@style/Chip"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/preset_balanced" />
+
+                <TextView
+                    android:id="@+id/chipStrong"
+                    style="@style/Chip"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/preset_strong" />
+
+                <TextView
+                    android:id="@+id/chipExtreme"
+                    style="@style/Chip"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/preset_extreme" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvPresetHint"
+                style="@style/Hint"
+                android:layout_marginTop="8dp"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="4"
+                android:textColor="@color/scene_text_secondary" />
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/section_target" />
+
+            <LinearLayout style="@style/Card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/section_target" />
+
+                    <TextView
+                        android:id="@+id/tvTargetValue"
+                        style="@style/RowValue" />
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/seekTarget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:max="13" />
+
+                <TextView
+                    style="@style/Hint"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/preset_hint_default" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/section_power" />
+
+            <LinearLayout style="@style/Card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/RowLabel"
+                            android:text="@string/eco_title" />
+
+                        <TextView
+                            style="@style/Hint"
+                            android:text="@string/eco_desc" />
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchEco"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="14dp"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/auto_off" />
+
+                    <TextView
+                        android:id="@+id/tvAutoOffValue"
+                        style="@style/RowValue" />
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/seekAutoOff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:max="7" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/battery_floor" />
+
+                    <TextView
+                        android:id="@+id/tvFloorValue"
+                        style="@style/RowValue" />
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/seekFloor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:max="6" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/hero_desc" />
+
+            <LinearLayout style="@style/Card">
+
+                <io.github.wumisc.hotwinter.ui.SparkView
+                    android:id="@+id/sparkTemp"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp" />
+
+                <TextView
+                    android:id="@+id/tvSparkCaption"
+                    style="@style/Hint"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="6dp"
+                    android:text="@string/spark_caption" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/label_load"
+                        android:textColor="@color/text_secondary" />
+
+                    <TextView
+                        android:id="@+id/tvLoad"
+                        style="@style/RowValue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/label_threads"
+                        android:textColor="@color/text_secondary" />
+
+                    <TextView
+                        android:id="@+id/tvThreads"
+                        style="@style/RowValue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/label_temp"
+                        android:textColor="@color/text_secondary" />
+
+                    <TextView
+                        android:id="@+id/tvTemp"
+                        style="@style/RowValue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/label_thermal"
+                        android:textColor="@color/text_secondary" />
+
+                    <TextView
+                        android:id="@+id/tvThermal"
+                        style="@style/RowValue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/label_elapsed"
+                        android:textColor="@color/text_secondary" />
+
+                    <TextView
+                        android:id="@+id/tvElapsed"
+                        style="@style/RowValue" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 功能 -->
+    <ScrollView
+        android:id="@+id/pageFeature"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:paddingBottom="108dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="18dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                style="@style/PageTitle"
+                android:text="@string/page_feature_title" />
+
+            <TextView
+                style="@style/Hint"
+                android:layout_marginTop="3dp"
+                android:text="@string/page_feature_desc" />
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/section_background" />
+
+            <LinearLayout style="@style/Card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/RowLabel"
+                            android:text="@string/keep_alive_title" />
+
+                        <TextView
+                            style="@style/Hint"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/keep_alive_desc" />
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchKeepAlive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/battery_optimization" />
+
+                    <TextView
+                        android:id="@+id/chipBattery"
+                        style="@style/ChipInline"
+                        android:text="@string/adapt_battery" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Hint"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/keep_alive_hint" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/section_couple" />
+
+            <LinearLayout style="@style/Card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/RowLabel"
+                            android:text="@string/couple_receive_title" />
+
+                        <TextView
+                            style="@style/Hint"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/couple_receive_desc" />
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchReceive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvCoupleStatus"
+                    style="@style/Hint"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/couple_status_default" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chipPick"
+                        style="@style/Chip"
+                        android:text="@string/couple_pick" />
+
+                    <TextView
+                        android:id="@+id/chipHeatHer"
+                        style="@style/Chip"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/couple_heat_her" />
+
+                    <TextView
+                        android:id="@+id/chipStopHer"
+                        style="@style/Chip"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/couple_stop_her" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Hint"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/couple_hint" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/section_adapt" />
+
+            <LinearLayout style="@style/Card">
+
+                <TextView
+                    android:id="@+id/tvRom"
+                    style="@style/RowLabel" />
+
+                <TextView
+                    android:id="@+id/tvRomNote"
+                    style="@style/Hint"
+                    android:layout_marginTop="4dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chipAutostart"
+                        style="@style/Chip"
+                        android:text="@string/adapt_autostart" />
+
+                    <TextView
+                        android:id="@+id/chipAppInfo"
+                        style="@style/Chip"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/adapt_appinfo" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Hint"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/adapt_hint" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/section_appearance" />
+
+            <LinearLayout style="@style/Card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/RowLabel"
+                            android:text="@string/log_title" />
+
+                        <TextView
+                            style="@style/Hint"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/log_desc" />
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchLog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvLogPath"
+                    style="@style/Hint"
+                    android:layout_marginTop="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/RowLabel"
+                            android:text="@string/couple_title" />
+
+                        <TextView
+                            style="@style/Hint"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/couple_desc" />
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchCouple"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/section_check" />
+
+            <LinearLayout style="@style/Card">
+
+                <TextView
+                    android:id="@+id/tvCheckResult"
+                    style="@style/Hint"
+                    android:text="@string/check_running" />
+
+                <TextView
+                    android:id="@+id/chipCheck"
+                    style="@style/Chip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/check_run" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/crash_title" />
+
+            <LinearLayout style="@style/Card">
+
+                <TextView
+                    android:id="@+id/tvCrash"
+                    style="@style/Hint"
+                    android:maxLines="8"
+                    android:text="@string/crash_empty" />
+
+                <TextView
+                    android:id="@+id/chipCopyCrash"
+                    style="@style/Chip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/crash_copy" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 关于 -->
+    <ScrollView
+        android:id="@+id/pageAbout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:paddingBottom="108dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="18dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                style="@style/PageTitle"
+                android:text="@string/page_about_title" />
+
+            <TextView
+                android:id="@+id/tvAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:lineSpacingExtra="4dp"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/section_support" />
+
+            <LinearLayout style="@style/Card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chipDonate"
+                        style="@style/Chip"
+                        android:text="@string/donate" />
+
+                    <TextView
+                        android:id="@+id/chipFeedback"
+                        style="@style/Chip"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/feedback" />
+
+                    <TextView
+                        android:id="@+id/chipGithub"
+                        style="@style/Chip"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/github" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Hint"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/support_hint" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/section_thanks" />
+
+            <LinearLayout style="@style/Card">
+
+                <TextView
+                    android:id="@+id/tvThanks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="4dp"
+                    android:text="@string/thanks_body"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/page_about_title" />
+
+            <LinearLayout style="@style/Card">
+
+                <TextView
+                    android:id="@+id/tvLicense"
+                    style="@style/Hint"
+                    android:text="@string/license_body" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvFootnote"
+                style="@style/Hint"
+                android:layout_marginTop="16dp"
+                android:text="@string/footnote" />
+        </LinearLayout>
+    </ScrollView>
+
+
+    <!-- 弹幕 -->
+    <ScrollView
+        android:id="@+id/pageDanmaku"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:paddingBottom="108dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="18dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                style="@style/PageTitle"
+                android:text="@string/page_danmaku_title" />
+
+            <TextView
+                style="@style/Hint"
+                android:layout_marginTop="3dp"
+                android:text="@string/page_danmaku_desc" />
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/channel_section" />
+
+            <LinearLayout style="@style/Card">
+
+                <TextView
+                    android:id="@+id/tvChannelStatus"
+                    style="@style/Hint"
+                    android:text="@string/channel_status_default" />
+
+                <TextView
+                    android:id="@+id/tvChannelCode"
+                    style="@style/RowValue"
+                    android:layout_marginTop="6dp"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvChannelCodeTip"
+                    style="@style/Hint"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/channel_code_tip"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chipCreateChannel"
+                        style="@style/Chip"
+                        android:text="@string/channel_create" />
+
+                    <TextView
+                        android:id="@+id/chipJoinChannel"
+                        style="@style/Chip"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/channel_join" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chipChannelQr"
+                        style="@style/Chip"
+                        android:text="@string/channel_qr" />
+
+                    <TextView
+                        android:id="@+id/chipChannelScan"
+                        style="@style/Chip"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/channel_scan" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/chipStopChannel"
+                    style="@style/Chip"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/channel_stop"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/Hint"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/channel_hint" />
+
+                <TextView
+                    style="@style/RowLabel"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/channel_members_title" />
+
+                <TextView
+                    android:id="@+id/tvChannelMembers"
+                    style="@style/Hint"
+                    android:text="@string/channel_members_empty" />
+
+                <TextView
+                    android:id="@+id/tvPeersEmpty"
+                    style="@style/Hint"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/channel_peers_empty" />
+
+                <LinearLayout
+                    android:id="@+id/listChannelPeers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/channel_auto" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchChannelAuto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Hint"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/channel_auto_hint" />
+            </LinearLayout>
+
+
+            <LinearLayout style="@style/Card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/RowLabel"
+                            android:text="@string/dm_overlay_title" />
+
+                        <TextView
+                            style="@style/Hint"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/dm_overlay_desc" />
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchOverlay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvDmStatus"
+                    style="@style/Hint"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/dm_status_default" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etDmInput"
+                        style="@style/Input"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:hint="@string/dm_input_hint"
+                        android:imeOptions="actionSend"
+                        android:inputType="text"
+                        android:maxLines="1" />
+
+                    <TextView
+                        android:id="@+id/chipDmSend"
+                        style="@style/ChipInline"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_primary_small"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp"
+                        android:text="@string/dm_send"
+                        android:textColor="@color/on_accent"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvDmFeed"
+                    style="@style/Hint"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/dm_feed_default" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/dm_section_look" />
+
+            <LinearLayout style="@style/Card">
+
+                <EditText
+                    android:id="@+id/etNick"
+                    style="@style/Input"
+                    android:layout_width="match_parent"
+                    android:hint="@string/dm_nick"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+                <EditText
+                    android:id="@+id/etRoom"
+                    style="@style/Input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/dm_font" />
+
+                    <TextView
+                        android:id="@+id/tvDmFontValue"
+                        style="@style/RowValue" />
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/seekDmFont"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="20" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/dm_speed" />
+
+                    <TextView
+                        android:id="@+id/tvDmSpeedValue"
+                        style="@style/RowValue" />
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/seekDmSpeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="16" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/dm_alpha" />
+
+                    <TextView
+                        android:id="@+id/tvDmAlphaValue"
+                        style="@style/RowValue" />
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/seekDmAlpha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="65" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/dm_lanes" />
+
+                    <TextView
+                        android:id="@+id/tvDmLanesValue"
+                        style="@style/RowValue" />
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/seekDmLanes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="10" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/RowLabel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/dm_show_nick" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchDmNick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionLabel"
+                android:text="@string/dm_section_link" />
+
+            <LinearLayout style="@style/Card">
+
+                <TextView
+                    style="@style/Hint"
+                    android:text="频道用于配对和加热授权；群聊和弹幕会在下一步接进来。" />
+
+                <TextView
+                    style="@style/RowLabel"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/dm_bt_title" />
+
+                <TextView
+                    style="@style/Hint"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/dm_bt_desc" />
+
+                <TextView
+                    android:id="@+id/chipDmBt"
+                    style="@style/ChipInline"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/dm_bt_go" />
+
+                <!-- 旧直连入口保留为空视图，避免运行时代码拿到 null；界面不再暴露地址/端口。 -->
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchUdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/etPort"
+                    style="@style/Input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/etPeerIp"
+                    style="@style/Input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 坐在导航栏顶边上的情侣（导航栏绘制在上层，小腿自然被挡住） -->
+    <io.github.wumisc.hotwinter.ui.CoupleView
+        android:id="@+id/couple"
+        android:layout_width="240dp"
+        android:layout_height="170dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="74dp" />
+
+    <!-- 圆角悬浮导航栏 -->
+    <LinearLayout
+        android:id="@+id/navBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_nav"
+        android:elevation="10dp"
+        android:orientation="horizontal"
+        android:padding="6dp">
+
+        <TextView
+            android:id="@+id/tabHome"
+            style="@style/NavItem"
+            android:text="@string/tab_home" />
+
+        <TextView
+            android:id="@+id/tabFeature"
+            style="@style/NavItem"
+            android:layout_marginStart="4dp"
+            android:text="@string/tab_feature" />
+
+        <TextView
+            android:id="@+id/tabDanmaku"
+            style="@style/NavItem"
+            android:layout_marginStart="4dp"
+            android:text="@string/tab_danmaku" />
+
+        <TextView
+            android:id="@+id/tabAbout"
+            style="@style/NavItem"
+            android:layout_marginStart="4dp"
+            android:text="@string/tab_about" />
+    </LinearLayout>
+</FrameLayout>

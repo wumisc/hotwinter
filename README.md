@@ -1,5 +1,7 @@
 # 情侣加热
 
+[![Android CI](https://github.com/wumisc/hotwinter/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/wumisc/hotwinter/actions/workflows/android.yml)
+
 > 「爱你的老婆冬天就要用暖宝宝」×「弹幕人生」融合版，当前 **1.5.8 稳定版**（versionCode 18）。
 > 包名仍是 `io.github.wumisc.hotwinter`，**直接覆盖升级**，不用卸载；应用名与磁贴名都改成了「情侣加热」。
 
@@ -139,6 +141,7 @@ gradle :app:assembleRelease   # 读 keystore.properties
 ```
 
 需要 **Gradle 9.9.1 + JDK 21 + Android SDK 37**；仓库没有附带 wrapper，用本机 Gradle 即可。
+GitHub Actions 会跑 JVM 测试、lint 和 debug 构建；Release 正式签名需要自备 `keystore.properties`。
 
 `keystore.properties` 与 `keystore/` 不进仓库；升级必须用同一个 keystore，否则要卸载重装。
 源码仓库同样不包含 `local.properties` 和构建产物，首次构建请用 Android Studio 或命令行指向本机 SDK。

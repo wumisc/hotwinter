@@ -23,7 +23,7 @@ public final class DmMessage {
         this(room, nick, text, newId());
     }
 
-    private DmMessage(String room, String nick, String text, String id) {
+    public DmMessage(String room, String nick, String text, String id) {
         this.room = room == null ? "" : room;
         this.nick = nick == null ? "" : nick;
         String value = text == null ? "" : text;

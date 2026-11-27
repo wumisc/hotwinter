@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -55,6 +54,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import io.github.wumisc.hotwinter.R;
+import io.github.wumisc.hotwinter.cloud.CloudPanel;
+import io.github.wumisc.hotwinter.cloud.CloudPrefs;
+import io.github.wumisc.hotwinter.cloud.CloudService;
+import io.github.wumisc.hotwinter.cloud.CloudSync;
 import io.github.wumisc.hotwinter.core.HeatRuntime;
 import io.github.wumisc.hotwinter.core.HeatSample;
 import io.github.wumisc.hotwinter.core.HeatStatus;
@@ -125,10 +128,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView chipPick;
     private TextView chipHeatHer;
     private TextView chipStopHer;
-    private TextView chipDonate;
-    private TextView chipFeedback;
-    private TextView chipGithub;
-    private TextView tvAbout;
     private SceneryView scenery;
     private CoupleView couple;
     private SparkView sparkTemp;
@@ -147,11 +146,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView tabHome;
     private TextView tabFeature;
     private TextView tabDanmaku;
-    private TextView tabAbout;
+    private TextView tabMine;
     private View pageHome;
     private View pageFeature;
     private View pageDanmaku;
-    private View pageAbout;
+    private View pageMine;
+    private CloudPanel cloudPanel;
     private View navBar;
     private int currentTab;
     private SeekBar seekTarget;
@@ -176,6 +176,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvDmLanesValue;
     private TextView chipDmSend;
     private TextView chipDmBt;
+    private TextView chipDmChannelCloud;
+    private TextView chipDmChannelUdp;
+    private TextView chipDmChannelBt;
+    private TextView tvDmChannelHint;
+    private CloudSync cloudSync;
+    private final CloudSync.Listener cloudListener = this::onCloudStateChanged;
     private SeekBar seekDmFont;
     private SeekBar seekDmSpeed;
     private SeekBar seekDmAlpha;
@@ -291,7 +297,6 @@ public class MainActivity extends AppCompatActivity {
 
         requestNotificationPermission();
         runDetection();
-        setAboutHead();
         bindRom();
         try {
             refreshCrashLog();
@@ -342,6 +347,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDanmakuRuntime() {
         DmBus.addListener(dmListener);
+        if (cloudSync != null) cloudSync.addListener(cloudListener);
         if (pendingOverlay && Settings.canDrawOverlays(this)) {
             pendingOverlay = false;
             if (switchOverlay != null) switchOverlay.setChecked(true);
@@ -372,6 +378,7 @@ public class MainActivity extends AppCompatActivity {
         ui.removeCallbacks(ticker);
         CoupleLink.removeListener(coupleListener);
         DmBus.removeListener(dmListener);
+        if (cloudSync != null) cloudSync.removeListener(cloudListener);
         try {
             commitDmFields();
         } catch (Throwable error) {
@@ -390,6 +397,11 @@ public class MainActivity extends AppCompatActivity {
         if (channel != null) {
             channel.clearListener(channelListener);
             if (isFinishing()) channel.stopAll();
+        }
+        if (cloudSync != null) cloudSync.removeListener(cloudListener);
+        if (cloudPanel != null) {
+            cloudPanel.destroy();
+            cloudPanel = null;
         }
         if (worker != null) {
             worker.shutdownNow();
@@ -418,6 +430,8 @@ public class MainActivity extends AppCompatActivity {
             if (granted && action != null) {
                 action.run();
             } else if (!granted) {
+                if (dmSettings != null) dmSettings.setUdpChannel(false);
+                renderDmChannels();
                 toast(getString(R.string.dm_need_local_permission));
             }
         } else if (requestCode == REQ_CAMERA) {
@@ -477,10 +491,6 @@ public class MainActivity extends AppCompatActivity {
         chipPick = findViewById(R.id.chipPick);
         chipHeatHer = findViewById(R.id.chipHeatHer);
         chipStopHer = findViewById(R.id.chipStopHer);
-        chipDonate = findViewById(R.id.chipDonate);
-        chipFeedback = findViewById(R.id.chipFeedback);
-        chipGithub = findViewById(R.id.chipGithub);
-        tvAbout = findViewById(R.id.tvAbout);
         scenery = findViewById(R.id.scenery);
         couple = findViewById(R.id.couple);
         sparkTemp = findViewById(R.id.sparkTemp);
@@ -494,11 +504,11 @@ public class MainActivity extends AppCompatActivity {
         tabHome = findViewById(R.id.tabHome);
         tabFeature = findViewById(R.id.tabFeature);
         tabDanmaku = findViewById(R.id.tabDanmaku);
-        tabAbout = findViewById(R.id.tabAbout);
+        tabMine = findViewById(R.id.tabMine);
         pageHome = findViewById(R.id.pageHome);
         pageFeature = findViewById(R.id.pageFeature);
         pageDanmaku = findViewById(R.id.pageDanmaku);
-        pageAbout = findViewById(R.id.pageAbout);
+        pageMine = findViewById(R.id.pageMine);
         navBar = findViewById(R.id.navBar);
 
         switchOverlay = findViewById(R.id.switchOverlay);
@@ -517,6 +527,10 @@ public class MainActivity extends AppCompatActivity {
         tvDmLanesValue = findViewById(R.id.tvDmLanesValue);
         chipDmSend = findViewById(R.id.chipDmSend);
         chipDmBt = findViewById(R.id.chipDmBt);
+        chipDmChannelCloud = findViewById(R.id.chipDmChannelCloud);
+        chipDmChannelUdp = findViewById(R.id.chipDmChannelUdp);
+        chipDmChannelBt = findViewById(R.id.chipDmChannelBt);
+        tvDmChannelHint = findViewById(R.id.tvDmChannelHint);
         seekDmFont = findViewById(R.id.seekDmFont);
         seekDmSpeed = findViewById(R.id.seekDmSpeed);
         seekDmAlpha = findViewById(R.id.seekDmAlpha);
@@ -555,27 +569,30 @@ public class MainActivity extends AppCompatActivity {
         });
         ViewCompat.requestApplyInsets(root);
 
-        if (tabHome == null || tabFeature == null || tabDanmaku == null || tabAbout == null) {
+        if (tabHome == null || tabFeature == null || tabDanmaku == null || tabMine == null) {
             Logbook.log("app", "底部导航缺失，跳过页面切换绑定");
             return;
         }
         tabHome.setOnClickListener(v -> selectTab(0));
         tabFeature.setOnClickListener(v -> selectTab(1));
         tabDanmaku.setOnClickListener(v -> selectTab(2));
-        tabAbout.setOnClickListener(v -> selectTab(3));
+        tabMine.setOnClickListener(v -> selectTab(3));
         selectTab(0);
     }
 
     private void selectTab(int index) {
-        if (pageHome == null || pageFeature == null || pageDanmaku == null || pageAbout == null
+        if (pageHome == null || pageFeature == null || pageDanmaku == null || pageMine == null
                 || scenery == null || couple == null) {
             return;
+        }
+        if (index == 3 && cloudPanel == null) {
+            cloudPanel = new CloudPanel(this, pageMine, true);
         }
         currentTab = index;
         pageHome.setVisibility(index == 0 ? View.VISIBLE : View.GONE);
         pageFeature.setVisibility(index == 1 ? View.VISIBLE : View.GONE);
         pageDanmaku.setVisibility(index == 2 ? View.VISIBLE : View.GONE);
-        pageAbout.setVisibility(index == 3 ? View.VISIBLE : View.GONE);
+        pageMine.setVisibility(index == 3 ? View.VISIBLE : View.GONE);
         scenery.setVisibility(index == 0 ? View.VISIBLE : View.GONE);
         couple.setVisibility(index == 0 && store.coupleEnabled() ? View.VISIBLE : View.GONE);
         if (index == 0) {
@@ -585,7 +602,10 @@ public class MainActivity extends AppCompatActivity {
         tabHome.setSelected(index == 0);
         tabFeature.setSelected(index == 1);
         tabDanmaku.setSelected(index == 2);
-        tabAbout.setSelected(index == 3);
+        tabMine.setSelected(index == 3);
+        if (index == 2 && dmSettings != null && dmSettings.cloudChannel()) {
+            ensureCloudStarted();
+        }
         if (channel != null) {
             if (index == 2) {
                 if (!LocalChannel.hasPermission(this) && !channelPermissionAsked) {
@@ -760,9 +780,6 @@ public class MainActivity extends AppCompatActivity {
             clipboard.setPrimaryClip(android.content.ClipData.newPlainText("crash", crashText));
             toast(getString(R.string.crash_copied));
         });
-        chipDonate.setOnClickListener(v -> toggleDonate());
-        chipFeedback.setOnClickListener(v -> openUrl("https://github.com/wumisc"));
-        chipGithub.setOnClickListener(v -> openUrl("https://github.com/wumisc"));
         switchCouple.setOnCheckedChangeListener((buttonView, isChecked) -> {
             store.setCoupleEnabled(isChecked);
             couple.setVisibility(isChecked && currentTab == 0 ? View.VISIBLE : View.GONE);
@@ -784,6 +801,7 @@ public class MainActivity extends AppCompatActivity {
     // --- 弹幕 ---
 
     private void setupDanmaku() {
+        cloudSync = CloudSync.get(this);
         dmListener = new DmBus.Listener() {
             @Override
             public void onDanmaku(DmMessage message) {
@@ -814,8 +832,92 @@ public class MainActivity extends AppCompatActivity {
         switchDmNick.setChecked(dmSettings.showNick());
         switchOverlay.setChecked(dmSettings.overlayEnabled() && Settings.canDrawOverlays(this));
         switchUdp.setChecked(dmSettings.udpEnabled());
+        setupDmChannels();
         renderDmValues();
         updateDmStatus();
+    }
+
+    private void onCloudStateChanged() {
+        if (uiReady) ui.post(this::updateDmStatus);
+    }
+
+    private void setupDmChannels() {
+        if (chipDmChannelCloud == null || chipDmChannelUdp == null || chipDmChannelBt == null) {
+            return;
+        }
+        chipDmChannelCloud.setOnClickListener(v -> toggleCloudChannel());
+        chipDmChannelUdp.setOnClickListener(v -> toggleUdpChannel());
+        chipDmChannelBt.setOnClickListener(v -> toggleBtChannel());
+        renderDmChannels();
+    }
+
+    private void renderDmChannels() {
+        if (dmSettings == null || chipDmChannelCloud == null) return;
+        boolean hasToken = CloudPrefs.get(this).hasToken();
+        if (!hasToken && dmSettings.cloudChannel()) {
+            dmSettings.setCloudChannel(false);
+        }
+        applyChannelState(chipDmChannelCloud, dmSettings.cloudChannel());
+        applyChannelState(chipDmChannelUdp, dmSettings.udpChannel());
+        applyChannelState(chipDmChannelBt, dmSettings.btChannel());
+        if (tvDmChannelHint != null) {
+            tvDmChannelHint.setText(hasToken
+                    ? getString(R.string.dm_channels_hint)
+                    : "云端未登录；局域网和蓝牙仍可发送。");
+        }
+    }
+
+    private void applyChannelState(TextView chip, boolean selected) {
+        chip.setSelected(selected);
+        chip.setTextColor(ContextCompat.getColor(this,
+                selected ? R.color.on_accent : R.color.text_primary));
+    }
+
+    private void toggleCloudChannel() {
+        boolean next = !dmSettings.cloudChannel();
+        if (next && !CloudPrefs.get(this).hasToken()) {
+            toast(getString(R.string.dm_cloud_need_login));
+            return;
+        }
+        dmSettings.setCloudChannel(next);
+        if (next) ensureCloudStarted();
+        renderDmChannels();
+        updateDmStatus();
+    }
+
+    private void toggleUdpChannel() {
+        boolean next = !dmSettings.udpChannel();
+        dmSettings.setUdpChannel(next);
+        if (next && !UdpMesh.active()) {
+            if (UdpMesh.hasPermission(this)) {
+                pendingLocalNetworkAction = null;
+                startLanDanmaku();
+            } else {
+                pendingLocalNetworkAction = this::startLanDanmaku;
+                toast(getString(R.string.dm_need_local_permission));
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_LOCAL_NETWORK}, REQ_LOCAL_NETWORK);
+            }
+        }
+        renderDmChannels();
+        updateDmStatus();
+    }
+
+    private void toggleBtChannel() {
+        boolean next = !dmSettings.btChannel();
+        dmSettings.setBtChannel(next);
+        if (next && !CoupleLink.isConnected()) {
+            toast("蓝牙还没连上，先到情侣模式配对");
+        }
+        renderDmChannels();
+        updateDmStatus();
+    }
+
+    private void ensureCloudStarted() {
+        if (dmSettings != null && dmSettings.cloudChannel()
+                && CloudPrefs.get(this).hasToken()) {
+            CloudService.start(this);
+        }
     }
 
     private void renderDmValues() {
@@ -943,17 +1045,15 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             commitDmFields();
+            if (dmSettings.cloudChannel()) ensureCloudStarted();
             int channels = DanmakuSender.send(this, text);
-            if (channels == (DanmakuSender.VIA_UDP | DanmakuSender.VIA_BT)) {
-                toast(getString(R.string.dm_sent_both));
-            } else if (channels == DanmakuSender.VIA_UDP) {
-                toast(getString(R.string.dm_sent_udp));
-            } else if (channels == DanmakuSender.VIA_BT) {
-                toast(getString(R.string.dm_sent_bt));
-            } else {
+            if (channels == 0) {
                 toast(getString(R.string.dm_sent_local));
+            } else {
+                toast(getString(R.string.dm_sent_channels, DanmakuSender.channelNames(channels)));
             }
             etDmInput.setText("");
+            updateDmStatus();
         });
         chipDmBt.setOnClickListener(v -> selectTab(1));
         bindChannelActions();
@@ -1407,11 +1507,13 @@ public class MainActivity extends AppCompatActivity {
         UdpMesh.start(this, dmSettings.port(), dmSettings.room(), dmSettings.peerIp());
         if (!UdpMesh.active()) {
             dmSettings.setUdpEnabled(false);
+            dmSettings.setUdpChannel(false);
             switchUdp.setChecked(false);
-            toast("附近连接没起来：换个 Wi-Fi 或稍后再试");
+            renderDmChannels();
+            toast("局域网没起来：换个 Wi-Fi 或稍后再试");
         } else {
             switchUdp.setChecked(true);
-            toast("弹幕连接已打开");
+            toast("局域网发送已打开");
         }
         updateDmStatus();
     }
@@ -1432,14 +1534,22 @@ public class MainActivity extends AppCompatActivity {
         if (tvDmStatus == null || dmSettings == null) return;
         String udp;
         if (UdpMesh.active()) {
-            udp = "频道内弹幕已连接";
+            udp = "局域网：已连接";
         } else if (!UdpMesh.hasPermission(this)) {
-            udp = "需要打开「附近连接」权限";
+            udp = "局域网：需要「附近连接」权限";
         } else {
-            udp = "弹幕未连接";
+            udp = "局域网：未连接";
+        }
+        String cloud;
+        if (!CloudPrefs.get(this).hasToken()) {
+            cloud = "云端：未登录";
+        } else if (cloudSync == null) {
+            cloud = "云端：未初始化";
+        } else {
+            cloud = "云端：" + cloudSync.snapshot().connectionText;
         }
         String overlay = DanmakuOverlayService.RUNNING ? "悬浮弹幕运行中" : "悬浮弹幕未开启";
-        tvDmStatus.setText(udp + "\n" + overlay + "\n蓝牙：" + CoupleLink.status());
+        tvDmStatus.setText(udp + "\n蓝牙：" + CoupleLink.status() + "\n" + cloud + "\n" + overlay);
     }
 
     // --- 蓝牙情侣 ---
@@ -1723,21 +1833,6 @@ public class MainActivity extends AppCompatActivity {
             params.bottomMargin = target;
             couple.setLayoutParams(params);
         });
-    }
-
-    // --- 关于 / 捐赠 ---
-
-    private void setAboutHead() {
-        String version = "1.4.0";
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
-            if (info.versionName != null) version = info.versionName;
-        } catch (PackageManager.NameNotFoundException ignored) {
-            // 用兜底版本号
-        }
-        if (tvAbout != null) {
-            tvAbout.setText(getString(R.string.about_head, version, getPackageName()));
-        }
     }
 
     /** 写日志需要能落到 /Android/NBB/：Android 11+ 走「所有文件访问」，更早版本走读存储权限。 */

@@ -17,9 +17,10 @@ android {
         applicationId = "io.github.wumisc.hotwinter"
         minSdk = 26
         targetSdk = 37
-        versionCode = 18
-        versionName = "1.5.8"
+        versionCode = 27
+        versionName = "1.7.2-cloud"
         vectorDrawables.useSupportLibrary = true
+        buildConfigField("String", "CLOUD_BASE_URL", "\"https://hotwinter-cloud.pages.dev\"")
     }
 
     signingConfigs {
@@ -46,12 +47,17 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
+            buildConfigField("String", "CLOUD_BASE_URL", "\"http://10.0.2.2:8787\"")
         }
     }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     lint {
@@ -78,6 +84,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.core:core:1.13.1")
     implementation("com.google.zxing:core:3.5.3")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
 
     testImplementation("junit:junit:4.13.2")

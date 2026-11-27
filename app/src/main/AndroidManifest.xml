@@ -38,6 +38,11 @@
         android:theme="@style/Theme.HotWinter">
 
         <activity
+            android:name=".cloud.CloudActivity"
+            android:exported="false"
+            android:theme="@style/Theme.HotWinter" />
+
+        <activity
             android:name=".ui.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
@@ -64,6 +69,15 @@
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="danmaku-overlay" />
+        </service>
+
+        <service
+            android:name=".cloud.CloudService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="cloud-couple-status-sync" />
         </service>
 
         <service

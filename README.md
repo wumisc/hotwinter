@@ -1,16 +1,35 @@
 # 情侣加热
 
-[![Android CI](https://github.com/wumisc/hotwinter/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/wumisc/hotwinter/actions/workflows/android.yml)
-
-> 「爱你的老婆冬天就要用暖宝宝」×「弹幕人生」融合版，当前 **1.5.8 稳定版**（versionCode 18）。
+> 「爱你的老婆冬天就要用暖宝宝」×「弹幕人生」融合版，当前 **1.7.2 三通道弹幕版**（versionCode 27）。
 > 包名仍是 `io.github.wumisc.hotwinter`，**直接覆盖升级**，不用卸载；应用名与磁贴名都改成了「情侣加热」。
 
 一个靠 CPU 恒温发热给手取暖、同时能和对象互发弹幕的 Android 小工具。
-不是烤手机，是用可控占空比把机身温度稳在目标值；弹幕走局域网/蓝牙，不依赖云端。
+不是烤手机，是用可控占空比把机身温度稳在目标值；弹幕优先走局域网/蓝牙，异地时可以走 Cloudflare 云端。
 
 - minSdk 26 / targetSdk 37 / compileSdk 37，纯 Java + AppCompat，无 Compose
 - 深色模式：`Theme.AppCompat.DayNight.NoActionBar` + `values-night/colors.xml`，跟随系统
 - 许可：AGPL-3.0
+
+## 1.7.2 三通道弹幕与 1.7.1 情侣化
+
+- 「我的」升级为底部一级页：账号卡、云端相伴天数、想 TA 就戳一下、关心提醒和悄悄话气泡。
+- 弹幕发送支持 **云端 / 局域网 / 蓝牙** 多选；云端优先，成功后把服务端消息 id 复用到局域网和蓝牙。
+- 接收侧 `DmBus` 按 id 去重：同一句从多个通道到达时，悬浮弹幕、最近消息和系统通知都只出现一次。
+- 未登录、未配对、局域网权限被拒绝或通道未连通时不会假装发送；Toast 会回显实际走通的通道。
+- 旧版本地链路保留；云端未连接时不排队、不阻塞局域网和蓝牙。
+
+## 1.6.0 云端测试版加了什么
+
+- 新增「关于 → 云端同步 · 异地也能收到弹幕和 TA 的近态」入口，独立页面，不改动底部四页布局
+- 账号：邮箱 + 密码；注册返回一次性恢复码，可用恢复码重置密码
+- 配对：6 位数字配对码，10 分钟有效；一个人同一时间只能绑定一个伴侣
+- 实时：Cloudflare Worker + Durable Object WebSocket，异地同步电量、充电、网络类型、是否加热
+- 弹幕：最近 50 条 / 7 天；云端弹幕会进入现有 DmBus，应用内列表和悬浮弹幕都能收到
+- 轻提醒：只做“早点睡 / 喝口热水”，不做远程锁机
+- 共享开关：双方各自手动开启，通知栏常驻；关闭后立即停止上传
+- Android 客户端 token 用系统 Keystore 的 AES-GCM 加密落盘；Keystore 不可用时退回应用私有目录并明确提示
+
+云端只共享五项状态，**不读取对方用了什么 App、不做使用时长统计、不做远程锁机**。这是双方可见、可随时关闭的状态共享，不是伴侣监控。
 
 ## 1.5.8 稳定版改了什么
 
@@ -20,14 +39,7 @@
 - 情侣服务只用一个 Handler 管自动释放，连续发命令不会被旧回调误停
 - 弹幕与蓝牙监听器逐个隔离，单个回调异常不影响其他监听
 - 雪山/火山、温度球和弹幕滚动从 60fps 降到约 30fps，长时间发热更省电
-- 新增启动/切页/刷新/捐赠入口的 UI 冒烟测试，当前 34 个 JVM 测试全过
-
-## 开源仓库说明
-
-- 仓库名 `hotwinter`，当前版本 **1.5.8 / versionCode 18**，许可证 AGPL-3.0
-- 不提交签名文件、`keystore.properties`、`local.properties`、APK 和构建目录
-- 为保护个人收款账户，源码里的支付宝/微信收款码是占位图，不是可用的收款码
-- 真机验证仍建议先装 Release 包；源码构建默认使用 debug 签名
+- 新增启动/切页/刷新/捐赠入口的 UI 冒烟测试，当前 50 个 JVM 测试全过
 
 ## 依赖什么（写明白）
 
@@ -109,7 +121,6 @@ SoC 自适应：先认芯片（`Build.SOC_MODEL`、`ro.soc.model`、`ro.board.pl
 - 通知标题统一「爱情加热中」；开「通知保后台」后停止加热也保留待机前台通知，降低被系统回收的概率
 - 日志开关默认关闭；打开后写 `/storage/emulated/0/Android/NBB/hotwinter.log`，512KB 滚动到 `hotwinter.old.log`
 - 捐赠支持：支付宝 / 微信收款码内置在应用里，点「关于 → 捐赠支持」直接弹出双码，不需要放文件，也不需要存储权限
-- 隐私说明：开源仓库中的两张收款码已替换为占位图，避免公开个人收款账户；自行构建时替换 `drawable-nodpi/` 下的同名文件即可
 
 ## 测试与验证
 
@@ -120,31 +131,39 @@ SoC 自适应：先认芯片（`Build.SOC_MODEL`、`ro.soc.model`、`ro.board.pl
 | 功能测试 | 设置夹紧 3 例（目标/定时/保护线越界与 NaN） | 3/3 |
 | 功能测试 | SoC 方案 6 例（识别、线程配额、未知芯片保守回落、核数边界） | 6/6 |
 | 功能测试 | 弹幕协议 6 例（中文/制表符/emoji 往返、异包丢弃、坏 Base64、超长截断、消息 id 唯一、旧四段包兼容） | 6/6 |
-| 界面冒烟 | 启动后切换首页/功能/关于、主动刷新、打开捐赠弹窗，不崩溃 | 通过 |
+| 功能测试 | 弹幕三通道 3 例（默认值/持久化、通道文案位掩码、同 id 只分发一次） | 3/3 |
+| 界面冒烟 | 启动后切换首页/功能/关于、主动刷新、打开捐赠弹窗、云端页空账号启动、三通道 chip 点击，不崩溃 | 通过 |
 | 稳定性测试 | 10000 次随机温度/电量/热状态输入：占空比合法、积分限幅、不停机即保下限 | 通过 |
 | 稳定性测试 | 6 线程 × 500 次并发广播 + 监听增删，无异常、状态可读 | 通过 |
 | 稳定性测试 | 1–16 核 × 三档：线程数 ≥1 且始终给系统留核 | 通过 |
-| 构建 | `assembleDebug` / `assembleRelease`（AGP 9.1.0 + Gradle 9.9.1 + JDK 21） | 通过 |
+| 构建 | `assembleDebug` / `assembleRelease`（AGP 9.1.0 + Gradle 9.8.2 + JDK 21） | 通过 |
 | 签名 | `apksigner verify`（v2/v3，CN=wumisc） | 通过 |
-| 静态检查 | `lintDebug` | 0 error / 69 warning |
+| 静态检查 | `lintDebug` | 0 error / 86 warning |
 
 > 本机没有 KVM、没有系统镜像，**未做真机安装验证**；以上为编译级 + JVM 逻辑级 + 静态校验级结果。
 > 真机上如果悬浮弹幕不出现，先在系统设置里确认「显示在其他应用上层」已允许，再回应用重开开关。
+
+## 云端同步怎么用
+
+1. 部署 `情侣加热-云同步` 里的 Worker（见该目录 README），拿到 `https://...workers.dev` 地址
+2. 打开「关于 → 云端同步 · 异地也能收到弹幕和 TA 的近态」
+3. 填 Worker 地址，注册账号，保存只显示一次的恢复码
+4. 一方生成 6 位配对码，另一方输入绑定
+5. 打开「共享我的状态」，通知栏出现「云端情侣同步」
+6. 对方打开同一页，就能看到电量、充电、网络、是否加热，并能发云端弹幕/轻提醒
+
+本地蓝牙/局域网仍然保留；云端是异地兜底，不会替代本地链路。
 
 ## 构建
 
 ```bash
 export JAVA_HOME=/path/to/jdk21
-gradle :app:testDebugUnitTest
-gradle :app:assembleDebug
-gradle :app:assembleRelease   # 读 keystore.properties
+./gradlew :app:testDebugUnitTest
+./gradlew :app:assembleDebug
+./gradlew :app:assembleRelease   # 读 keystore.properties
 ```
 
-需要 **Gradle 9.9.1 + JDK 21 + Android SDK 37**；仓库没有附带 wrapper，用本机 Gradle 即可。
-GitHub Actions 会跑 JVM 测试、lint 和 debug 构建；Release 正式签名需要自备 `keystore.properties`。
-
 `keystore.properties` 与 `keystore/` 不进仓库；升级必须用同一个 keystore，否则要卸载重装。
-源码仓库同样不包含 `local.properties` 和构建产物，首次构建请用 Android Studio 或命令行指向本机 SDK。
 
 ## 安全边界
 

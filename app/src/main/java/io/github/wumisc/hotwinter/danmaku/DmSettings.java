@@ -21,6 +21,30 @@ public final class DmSettings {
         prefs.edit().putBoolean("overlay", value).apply();
     }
 
+    public boolean cloudChannel() {
+        return prefs.getBoolean("channel_cloud", false);
+    }
+
+    public void setCloudChannel(boolean value) {
+        prefs.edit().putBoolean("channel_cloud", value).apply();
+    }
+
+    public boolean udpChannel() {
+        return prefs.getBoolean("channel_udp", true);
+    }
+
+    public void setUdpChannel(boolean value) {
+        prefs.edit().putBoolean("channel_udp", value).apply();
+    }
+
+    public boolean btChannel() {
+        return prefs.getBoolean("channel_bt", true);
+    }
+
+    public void setBtChannel(boolean value) {
+        prefs.edit().putBoolean("channel_bt", value).apply();
+    }
+
     public boolean udpEnabled() {
         return prefs.getBoolean("udp", false);
     }

@@ -1,0 +1,24 @@
+{
+  "name": "hotwinter-cloud-sync",
+  "version": "0.1.0",
+  "private": true,
+  "description": "情侣加热云端实时同步：账号、配对、情侣状态与弹幕中继",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --local --ip 127.0.0.1 --port 8787",
+    "db:local": "wrangler d1 migrations apply DB --local",
+    "db:remote": "wrangler d1 migrations apply DB --remote",
+    "deploy": "wrangler deploy",
+    "deploy:pages": "wrangler pages deploy pages-proxy --project-name hotwinter-cloud --branch main",
+    "test": "node test/smoke.mjs",
+    "test:race": "node test/pair-race.mjs",
+    "test:remote": "node test/remote-smoke.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.166.0",
+    "ws": "8.18.3"
+  },
+  "dependencies": {
+    "puppeteer-core": "^25.18.1"
+  }
+}
